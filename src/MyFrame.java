@@ -159,77 +159,6 @@ public class MyFrame extends JFrame implements ActionListener{
 			AvailableTable availableTable = new AvailableTable();
 			frame.add(availableTable.panel);
 			frame.setVisible(true);
-			
-			/*
-			numberOfResource = 3;
-			numberOfProcess = 5;
-			
-			initial = new ArrayList<Integer>(Arrays.asList(10,5,7));
-			
-			
-			// Available Table appear 
-			InitialTable initialTable = new InitialTable();
-			frame.add(initialTable.panel);
-			
-			//Max table random
-			
-			max = new ArrayList<ArrayList<Integer>>();
-			max.add(new ArrayList<Integer>(Arrays.asList(7,5,3)));
-			max.add(new ArrayList<Integer>(Arrays.asList(3,2,2)));
-			max.add(new ArrayList<Integer>(Arrays.asList(9,0,2)));
-			max.add(new ArrayList<Integer>(Arrays.asList(2,2,2)));
-			max.add(new ArrayList<Integer>(Arrays.asList(4,3,3)));
-			 
-			//Max table appear
-			
-			MaxTable maxTable = new MaxTable();
-			frame.add(maxTable.panel);
-			
-			// Allocation table random
-			allocation = new ArrayList<ArrayList<Integer>>();
-			allocation.add(new ArrayList<Integer>(Arrays.asList(0,1,0)));
-			allocation.add(new ArrayList<Integer>(Arrays.asList(2,0,0)));
-			allocation.add(new ArrayList<Integer>(Arrays.asList(3,0,2)));
-			allocation.add(new ArrayList<Integer>(Arrays.asList(2,1,1)));
-			allocation.add(new ArrayList<Integer>(Arrays.asList(0,0,2)));
-			
-			//Allocation Table appear
-			AllocationTable allocationTable = new AllocationTable();
-			frame.add(allocationTable.panel);
-			
-			//Need table random
-			int z;
-			need = new ArrayList<ArrayList<Integer>>();
-			for ( int j=0 ; j<numberOfProcess ; j++) {
-				temp = new ArrayList<Integer>();
-				for ( int i=0 ; i<numberOfResource ; i++) {
-					z = max.get(j).get(i) - allocation.get(j).get(i);
-					if(z>0) temp.add(z);
-					else temp.add(0);
-				}
-				need.add(temp);
-			}
-			
-			//Need table appear
-			NeedTable needTable = new NeedTable();
-			frame.add(needTable.panel);
-			
-			
-			//Available table random
-			available = new ArrayList<Integer>();
-			for ( int i=0 ; i<numberOfResource ; i++) {
-				int sum = 0 ;
-				for ( int j=0 ; j<numberOfProcess ; j++) {
-					sum += allocation.get(j).get(i);
-				}
-				available.add(initial.get(i) - sum);
-			}
-			
-			//Available table appear
-			AvailableTable availableTable = new AvailableTable();
-			frame.add(availableTable.panel);
-			//end test
-			 */
 		}
 	
 		if(e.getSource() == buttonRequest) { 			//click Request button
@@ -238,7 +167,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			checkRequest = true;
 			request = new ArrayList<ArrayList<Integer>>();
 			nameOfProcessRequest = new LinkedHashSet<Integer>();
-			numberOfProcessRequest = rand.nextInt(numberOfProcess)+1;
+			numberOfProcessRequest = rand.nextInt(numberOfProcess/2)+1;
 			while(nameOfProcessRequest.size() < numberOfProcessRequest) {
 				nameOfProcessRequest.add(rand.nextInt(numberOfProcess)+1);
 			}
@@ -254,18 +183,6 @@ public class MyFrame extends JFrame implements ActionListener{
 			RequestTable requestTable = new RequestTable();
 			frame.add(requestTable.panel);
 			frame.setVisible(true);
-			/*
-			checkRequest = true;
-			request = new ArrayList<ArrayList<Integer>>();
-			nameOfProcessRequest = new LinkedHashSet<Integer>(Arrays.asList(2,5,1));
-			numberOfProcessRequest = 3;
-			request.add(new ArrayList<Integer>(Arrays.asList(1,0,2)));
-			request.add(new ArrayList<Integer>(Arrays.asList(3,0,3)));
-			request.add(new ArrayList<Integer>(Arrays.asList(0,2,0)));
-			//request table appear
-			RequestTable requestTable = new RequestTable();
-			frame.add(requestTable.panel);
-			*/
 		}
 		
 		if(e.getSource() == buttonRun) {				//click Run button
