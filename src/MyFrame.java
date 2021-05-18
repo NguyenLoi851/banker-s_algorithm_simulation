@@ -46,6 +46,7 @@ public class MyFrame extends JFrame implements ActionListener{
 	    
 	    buttonRandom =new JButton("Start Random");
 	    buttonRandom.setBounds(980,10,150,50);
+	    buttonRandom.setBackground(Color.green);
 	    buttonRandom.addActionListener(this);
 	    
 	    /*
@@ -56,10 +57,12 @@ public class MyFrame extends JFrame implements ActionListener{
 	    
 	    buttonRun = new JButton("Run");
 	    buttonRun.setBounds(800,70,150,50);
+	    buttonRun.setBackground(Color.yellow);
 	    buttonRun.addActionListener(this);
 	    
 	    buttonRequest = new JButton("Request Random");
 	    buttonRequest.setBounds(800,10,150,50);
+	    buttonRequest.setBackground(Color.pink);
 	    buttonRequest.addActionListener(this);
 	    
 	    ImageIcon icon = new ImageIcon("bank.jpg");
@@ -70,6 +73,8 @@ public class MyFrame extends JFrame implements ActionListener{
         //frame.add(buttonReset);
         frame.add(buttonRun);
         frame.setIconImage(icon.getImage());
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        frame.setUndecorated(false);
         frame.setVisible(true);
 	}
 	@Override
@@ -80,11 +85,11 @@ public class MyFrame extends JFrame implements ActionListener{
 			//Initial table random 
 			
 			numberOfResource = rand.nextInt(5)+2 ;
-			numberOfProcess = rand.nextInt(10)+2;
+			numberOfProcess = rand.nextInt(6)+5;
 			
 			initial = new ArrayList<Integer>();
 			for ( int i=0 ; i<numberOfResource ; i++ ) {
-				initial.add(rand.nextInt(15) +2);
+				initial.add(rand.nextInt(20)+10);
 			}
 			
 			// Initial Table appear 
@@ -97,7 +102,8 @@ public class MyFrame extends JFrame implements ActionListener{
 			for( int j=0 ; j<numberOfProcess ; j++) {
 				temp = new ArrayList<Integer>();
 				for ( int i=0 ; i<numberOfResource ; i++) {
-					temp.add(rand.nextInt(5)+2);
+					int a = initial.get(i)/numberOfProcess;
+					temp.add(rand.nextInt(a*(3/2-2/3)+1)+a/3*2);
 				}
 				max.add(temp);
 			}
@@ -112,7 +118,8 @@ public class MyFrame extends JFrame implements ActionListener{
 			for( int j=0 ; j<numberOfProcess ; j++) {
 				temp = new ArrayList<Integer>();
 				for ( int i=0 ; i<numberOfResource ; i++) {
-					temp.add(rand.nextInt(5)+2);
+					temp.add(rand.nextInt(max.get(j).get(i)/10*9+1));
+					
 				}
 				allocation.add(temp);
 			}
@@ -151,6 +158,78 @@ public class MyFrame extends JFrame implements ActionListener{
 			//Available table appear
 			AvailableTable availableTable = new AvailableTable();
 			frame.add(availableTable.panel);
+			frame.setVisible(true);
+			
+			/*
+			numberOfResource = 3;
+			numberOfProcess = 5;
+			
+			initial = new ArrayList<Integer>(Arrays.asList(10,5,7));
+			
+			
+			// Available Table appear 
+			InitialTable initialTable = new InitialTable();
+			frame.add(initialTable.panel);
+			
+			//Max table random
+			
+			max = new ArrayList<ArrayList<Integer>>();
+			max.add(new ArrayList<Integer>(Arrays.asList(7,5,3)));
+			max.add(new ArrayList<Integer>(Arrays.asList(3,2,2)));
+			max.add(new ArrayList<Integer>(Arrays.asList(9,0,2)));
+			max.add(new ArrayList<Integer>(Arrays.asList(2,2,2)));
+			max.add(new ArrayList<Integer>(Arrays.asList(4,3,3)));
+			 
+			//Max table appear
+			
+			MaxTable maxTable = new MaxTable();
+			frame.add(maxTable.panel);
+			
+			// Allocation table random
+			allocation = new ArrayList<ArrayList<Integer>>();
+			allocation.add(new ArrayList<Integer>(Arrays.asList(0,1,0)));
+			allocation.add(new ArrayList<Integer>(Arrays.asList(2,0,0)));
+			allocation.add(new ArrayList<Integer>(Arrays.asList(3,0,2)));
+			allocation.add(new ArrayList<Integer>(Arrays.asList(2,1,1)));
+			allocation.add(new ArrayList<Integer>(Arrays.asList(0,0,2)));
+			
+			//Allocation Table appear
+			AllocationTable allocationTable = new AllocationTable();
+			frame.add(allocationTable.panel);
+			
+			//Need table random
+			int z;
+			need = new ArrayList<ArrayList<Integer>>();
+			for ( int j=0 ; j<numberOfProcess ; j++) {
+				temp = new ArrayList<Integer>();
+				for ( int i=0 ; i<numberOfResource ; i++) {
+					z = max.get(j).get(i) - allocation.get(j).get(i);
+					if(z>0) temp.add(z);
+					else temp.add(0);
+				}
+				need.add(temp);
+			}
+			
+			//Need table appear
+			NeedTable needTable = new NeedTable();
+			frame.add(needTable.panel);
+			
+			
+			//Available table random
+			available = new ArrayList<Integer>();
+			for ( int i=0 ; i<numberOfResource ; i++) {
+				int sum = 0 ;
+				for ( int j=0 ; j<numberOfProcess ; j++) {
+					sum += allocation.get(j).get(i);
+				}
+				available.add(initial.get(i) - sum);
+			}
+			
+			//Available table appear
+			AvailableTable availableTable = new AvailableTable();
+			frame.add(availableTable.panel);
+			//end test
+			 */
 		}
 	
 		if(e.getSource() == buttonRequest) { 			//click Request button
@@ -163,6 +242,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			while(nameOfProcessRequest.size() < numberOfProcessRequest) {
 				nameOfProcessRequest.add(rand.nextInt(numberOfProcess)+1);
 			}
+			Integer[] tem = nameOfProcessRequest.toArray(new Integer[nameOfProcessRequest.size()]);
 			for (int j=0 ; j<numberOfProcessRequest ; j++) {
 				temp = new ArrayList<Integer>();
 				for( int i=0 ; i<numberOfResource ; i++) {
@@ -173,6 +253,19 @@ public class MyFrame extends JFrame implements ActionListener{
 			//request table appear
 			RequestTable requestTable = new RequestTable();
 			frame.add(requestTable.panel);
+			frame.setVisible(true);
+			/*
+			checkRequest = true;
+			request = new ArrayList<ArrayList<Integer>>();
+			nameOfProcessRequest = new LinkedHashSet<Integer>(Arrays.asList(2,5,1));
+			numberOfProcessRequest = 3;
+			request.add(new ArrayList<Integer>(Arrays.asList(1,0,2)));
+			request.add(new ArrayList<Integer>(Arrays.asList(3,0,3)));
+			request.add(new ArrayList<Integer>(Arrays.asList(0,2,0)));
+			//request table appear
+			RequestTable requestTable = new RequestTable();
+			frame.add(requestTable.panel);
+			*/
 		}
 		
 		if(e.getSource() == buttonRun) {				//click Run button
