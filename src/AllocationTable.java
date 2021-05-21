@@ -30,7 +30,7 @@ public class AllocationTable {
         JScrollPane tableContainer = new JScrollPane(table);
         panel=new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.setBounds(300,150,250,250);
+        panel.setBounds(358,200,250,200);
         panel.add(label,BorderLayout.NORTH);
         panel.add(tableContainer,BorderLayout.CENTER);
 	}

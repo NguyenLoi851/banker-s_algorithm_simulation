@@ -16,9 +16,10 @@ public class MyFrame extends JFrame implements ActionListener{
 	JButton buttonRandom, buttonReset, buttonRun, buttonRequest;
 	
 	JTextArea resultText=new JTextArea(12,20);
+	JTextArea resultText2=new JTextArea(12,20);
 	
 	public static int numberOfResource, numberOfProcess, numberOfProcessRequest;
-	public static boolean checkRequest = false;
+	public static boolean checkButtonRequest = false, checkButtonRandom = false;
 	public static ArrayList<Integer> available, work, orderOfExecution,initial;
 	public static ArrayList<ArrayList<Integer>> allocation, max, need, request;
 	public static ArrayList<Integer> temp;
@@ -27,13 +28,13 @@ public class MyFrame extends JFrame implements ActionListener{
 	
 	
 	MyFrame(){
-		frame.setTitle("Banker's Algorithm Simulator");
+		frame.setTitle("Banker's Algorithm Simulation");
 	    frame.setSize(1200,1200);
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setLayout(null);
+	    frame.setBackground(Color.white);
 	    
 	    resultText.setText("");
-	    resultText.setLineWrap(true);
 	    JScrollPane textContainer=new JScrollPane(resultText);
 	    textContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    textContainer.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -41,36 +42,58 @@ public class MyFrame extends JFrame implements ActionListener{
 	    textContainer.setVisible(true);
 	    JPanel panel=new JPanel();
 	    panel.setLayout(new BorderLayout());
-	    panel.setBounds(10,450,1120,450);
+	    panel.setBounds(35,425,610,500);
 	    panel.add(textContainer,BorderLayout.NORTH);
 	    
+	    resultText2.setText("");
+	    JScrollPane textContainer2=new JScrollPane(resultText2);
+	    textContainer2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    textContainer2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    textContainer2.setSize(100,100);
+	    textContainer2.setVisible(true);
+	    JPanel panel2=new JPanel();
+	    panel2.setLayout(new BorderLayout());
+	    panel2.setBounds(645,425,610,500);
+	    panel2.add(textContainer2,BorderLayout.NORTH);
+	    
+	    JTextField text=new JTextField();
+        text.setText("Banker's Algorithm Simulator");
+        text.setBounds(500,10,300,75);
+        text.setHorizontalAlignment(JTextField.CENTER);
+        text.setFont(new Font("Comic Sans", Font.BOLD + Font.ITALIC, 20));
+        text.setBackground(Color.cyan);
+        text.setEditable(false);
+        text.setAutoscrolls(false);
+	    
 	    buttonRandom =new JButton("Start Random");
-	    buttonRandom.setBounds(980,10,150,50);
+	    buttonRandom.setBounds(682,130,135,50);
 	    buttonRandom.setBackground(Color.green);
 	    buttonRandom.addActionListener(this);
 	    
-	    /*
+
 	    buttonReset = new JButton("Reset");
-	    buttonReset.setBounds(980,70,150,50);
+	    buttonReset.setBounds(1120,130,135,50);
+	    buttonReset.setBackground(Color.red);
 	    buttonReset.addActionListener(this);
-	    */
 	    
 	    buttonRun = new JButton("Run");
-	    buttonRun.setBounds(800,70,150,50);
+	    buttonRun.setBounds(828,130,135,50);
 	    buttonRun.setBackground(Color.yellow);
 	    buttonRun.addActionListener(this);
 	    
 	    buttonRequest = new JButton("Request Random");
-	    buttonRequest.setBounds(800,10,150,50);
+	    buttonRequest.setBounds(974,130,135,50);
 	    buttonRequest.setBackground(Color.pink);
 	    buttonRequest.addActionListener(this);
 	    
 	    ImageIcon icon = new ImageIcon("bank.jpg");
 	    
 	    frame.getContentPane().add(panel);
+	    frame.getContentPane().add(panel2);
+	    frame.add(text);
         frame.add(buttonRandom);
         frame.add(buttonRequest);
-        //frame.add(buttonReset);
+        frame.add(buttonReset);
         frame.add(buttonRun);
         frame.setIconImage(icon.getImage());
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -83,13 +106,32 @@ public class MyFrame extends JFrame implements ActionListener{
 		
 		if(e.getSource() == buttonRandom) { 			// click Start button
 			//Initial table random 
-			
-			numberOfResource = rand.nextInt(5)+2 ;
-			numberOfProcess = rand.nextInt(6)+5;
+			if(checkButtonRandom == true) {
+				AllocationTable.panel.setVisible(false);
+				frame.remove(AllocationTable.panel);
+				
+				AvailableTable.panel.setVisible(false);
+				frame.remove(AvailableTable.panel);
+				
+				InitialTable.panel.setVisible(false);
+				frame.remove(InitialTable.panel);
+				
+				MaxTable.panel.setVisible(false);
+				frame.remove(MaxTable.panel);
+				
+				NeedTable.panel.setVisible(false);
+				frame.remove(NeedTable.panel);
+				
+				resultText.setText("");
+				resultText2.setText("");
+			}
+			checkButtonRandom = true;
+			numberOfResource = rand.nextInt(6)+3 ;	// 3-8
+			numberOfProcess = rand.nextInt(6)+5;	// 5-10
 			
 			initial = new ArrayList<Integer>();
 			for ( int i=0 ; i<numberOfResource ; i++ ) {
-				initial.add(rand.nextInt(20)+10);
+				initial.add(rand.nextInt(21)+80);	// 80-100
 			}
 			
 			// Initial Table appear 
@@ -102,8 +144,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			for( int j=0 ; j<numberOfProcess ; j++) {
 				temp = new ArrayList<Integer>();
 				for ( int i=0 ; i<numberOfResource ; i++) {
-					int a = initial.get(i)/numberOfProcess;
-					temp.add(rand.nextInt(a*(3/2-2/3)+1)+a/3*2);
+					temp.add(rand.nextInt(55)+rand.nextInt(25));
 				}
 				max.add(temp);
 			}
@@ -118,7 +159,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			for( int j=0 ; j<numberOfProcess ; j++) {
 				temp = new ArrayList<Integer>();
 				for ( int i=0 ; i<numberOfResource ; i++) {
-					temp.add(rand.nextInt(max.get(j).get(i)/10*9+1));
+					temp.add(rand.nextInt((initial.get(i))/numberOfProcess));
 					
 				}
 				allocation.add(temp);
@@ -163,8 +204,13 @@ public class MyFrame extends JFrame implements ActionListener{
 	
 		if(e.getSource() == buttonRequest) { 			//click Request button
 			//request table random
+			if(checkButtonRequest == true) {
+				RequestTable.panel.setVisible(false);
+				frame.remove(RequestTable.panel);
+				resultText2.setText("");
+			}
 			
-			checkRequest = true;
+			checkButtonRequest = true;
 			request = new ArrayList<ArrayList<Integer>>();
 			nameOfProcessRequest = new LinkedHashSet<Integer>();
 			numberOfProcessRequest = rand.nextInt(numberOfProcess/2)+1;
@@ -175,7 +221,8 @@ public class MyFrame extends JFrame implements ActionListener{
 			for (int j=0 ; j<numberOfProcessRequest ; j++) {
 				temp = new ArrayList<Integer>();
 				for( int i=0 ; i<numberOfResource ; i++) {
-					temp.add(rand.nextInt(5));
+					float a = need.get(tem[j]-1).get(i);
+					temp.add(rand.nextInt((int)(a/100*85+a/100*30)+1));
 				}
 				request.add(temp);
 			}
@@ -185,12 +232,43 @@ public class MyFrame extends JFrame implements ActionListener{
 			frame.setVisible(true);
 		}
 		
+		if(e.getSource() == buttonReset) {				//click Reset button
+			
+			AllocationTable.panel.setVisible(false);
+			frame.remove(AllocationTable.panel);
+			
+			AvailableTable.panel.setVisible(false);
+			frame.remove(AvailableTable.panel);
+			
+			InitialTable.panel.setVisible(false);
+			frame.remove(InitialTable.panel);
+			
+			MaxTable.panel.setVisible(false);
+			frame.remove(MaxTable.panel);
+			
+			NeedTable.panel.setVisible(false);
+			frame.remove(NeedTable.panel);
+			
+			if(checkButtonRequest == true) {
+				RequestTable.panel.setVisible(false);
+				frame.remove(RequestTable.panel);
+				checkButtonRequest = false;
+			}
+			resultText.setText("");
+			resultText2.setText("");
+		}
+		
+		
+		
+		
 		if(e.getSource() == buttonRun) {				//click Run button
-			resultText.setText(resultText.getText()+"\n---------- Kết quả chạy thuật toán ----------\n");
-			if(checkRequest == false) {
+			
+			if(checkButtonRequest == false) {
+				resultText.setText(resultText.getText()+"\n\n\n                       "
+						+ "---------- Kết quả chạy thuật toán kiểm tra tính an toàn----------\n");
 				if(safe() == true) {
-					resultText.setText(resultText.getText()+"\n"+" -> Trạng thái: An toàn \n");
-					resultText.setText(resultText.getText()+"\n"+" -> Quá trình thực thi: ");
+					resultText.setText(resultText.getText()+"\n"+" -> Trạng thái hiện tại của hệ thống: An toàn \n");
+					resultText.setText(resultText.getText()+"   -> Trình tự cấp phát tài nguyên: ");
 					for( int i=0 ; i<numberOfProcess ; i++) {
 						if(i!=numberOfProcess-1)
 							resultText.setText(resultText.getText()+" P"+String.valueOf(orderOfExecution.get(i))+" -> ");
@@ -198,48 +276,50 @@ public class MyFrame extends JFrame implements ActionListener{
 							resultText.setText(resultText.getText()+" P"+String.valueOf(orderOfExecution.get(i))+".\n");
 					}
 				}else {
-					resultText.setText(resultText.getText()+"\n"+" -> Trạng thái: Không an toàn \n");
+					resultText.setText(resultText.getText()+"\n"+" -> Trạng thái hiện tại của hệ thống: Không an toàn \n");
 				}
 			}else {
+				resultText2.setText(resultText2.getText()+"\n\n\n                       "
+						+ "---------- Kết quả chạy thuật toán yêu cầu tài nguyên----------\n");
 				//đưa từng tiến trình trong bảng request vào
 				Integer[] temp = nameOfProcessRequest.toArray(new Integer[nameOfProcessRequest.size()]);
 				for ( int i=0 ; i<numberOfProcessRequest ; i++) {
 					//xét tiến trình với need[i]
 					if(aSmallAndEqualThanB(request.get(i), need.get(temp[i]-1)) == false) {
-						resultText.setText(resultText.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
+						resultText2.setText(resultText2.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
 								": Yêu cầu vượt quá khai báo Tài nguyên. Do request(P"
 								+String.valueOf(temp[i])+") = (");
 						for ( int j=0 ; j<numberOfResource ; j++) {
 							if(j!=numberOfResource-1)
-								resultText.setText(resultText.getText()+String.valueOf(request.get(i).get(j)+" ; "));
+								resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ; "));
 							else
-								resultText.setText(resultText.getText()+String.valueOf(request.get(i).get(j)+" ) "));
+								resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ) "));
 						}
-						resultText.setText(resultText.getText()+"> need(P"+String.valueOf(temp[i]) +")= (");
+						resultText2.setText(resultText2.getText()+"> need(P"+String.valueOf(temp[i]) +")= (");
 						for ( int j=0 ; j<numberOfResource ; j++) {
 							if(j!=numberOfResource-1)
-								resultText.setText(resultText.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ; "));
+								resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ; "));
 							else
-								resultText.setText(resultText.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ) \n"));
+								resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ) \n"));
 						}
 					}else {
 						//xét tiến trình với available
 						if(aSmallAndEqualThanB(request.get(i), available) == false) {
-							resultText.setText(resultText.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
+							resultText2.setText(resultText2.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
 									": Không đủ tài nguyên, tiến trình phải đợi. Do request(P"
 									+String.valueOf(temp[i])+") = (");
 							for ( int j=0 ; j<numberOfResource ; j++) {
 								if(j!=numberOfResource-1)
-									resultText.setText(resultText.getText()+String.valueOf(request.get(i).get(j)+" ; "));
+									resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ; "));
 								else
-									resultText.setText(resultText.getText()+String.valueOf(request.get(i).get(j)+" ) "));
+									resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ) "));
 							}
-							resultText.setText(resultText.getText()+"> available = (");
+							resultText2.setText(resultText2.getText()+"> available = (");
 							for ( int j=0 ; j<numberOfResource ; j++) {
 								if(j!=numberOfResource-1)
-									resultText.setText(resultText.getText()+String.valueOf(available.get(j)+" ; "));
+									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ; "));
 								else
-									resultText.setText(resultText.getText()+String.valueOf(available.get(j)+" ) \n"));
+									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ) \n"));
 							}
 						}else {
 							for( int j=0 ; j<numberOfResource ; j++) {
@@ -247,11 +327,18 @@ public class MyFrame extends JFrame implements ActionListener{
 								allocation.get(temp[i]-1).set(j, allocation.get(temp[i]-1).get(j) + request.get(i).get(j));
 								need.get(temp[i]-1).set(j, need.get(temp[i]-1).get(j) - request.get(i).get(j));
 							}
-							if(safe() == true) {
-								resultText.setText(resultText.getText()+"\n"+" -> P"+
+							if(safe2() == true) {
+								resultText2.setText(resultText2.getText()+"\n"+" -> P"+
 										String.valueOf(temp[i])+": Được phân phối theo yêu cầu"+"\n");
+								resultText2.setText(resultText2.getText()+"   -> Trình tự cấp phát tài nguyên: ");
+								for( int k=0 ; k<numberOfProcess ; k++) {
+									if(k!=numberOfProcess-1)
+										resultText2.setText(resultText2.getText()+" P"+String.valueOf(orderOfExecution.get(k))+" -> ");
+									else
+										resultText2.setText(resultText2.getText()+" P"+String.valueOf(orderOfExecution.get(k))+".\n");
+								}
 							}else {
-								resultText.setText(resultText.getText()+"\n"+" -> P"+
+								resultText2.setText(resultText2.getText()+"\n"+" -> P"+
 										String.valueOf(temp[i])+": Phải đợi do có thể gây deadlock" +"\n");
 								
 								for( int j=0 ; j<numberOfResource ; j++) {
@@ -304,7 +391,10 @@ public class MyFrame extends JFrame implements ActionListener{
 						else 
 							resultText.setText(resultText.getText()+String.valueOf(work.get(j))+" ) ");
 					}
-					resultText.setText(resultText.getText()+" -> P" +String.valueOf(i+1)+" thực thi. New Available = (");
+					resultText.setText(resultText.getText()+"\n    -> P" +String.valueOf(i+1)+" được cấp phát thêm tài nguyên."
+							+ "\n        -> Chương trình thu hồi tài nguyên đã cấp phát cho tiến trình P"
+							+ String.valueOf(i+1)
+							+ "\n            -> New Available = (");
 					
 					for ( int j=0 ; j<numberOfResource ; j++) {
 						work.set(j, work.get(j) + allocation.get(i).get(j));
@@ -319,6 +409,111 @@ public class MyFrame extends JFrame implements ActionListener{
 					}
 					resultText.setText(resultText.getText()+"\n");
 				}
+				else {
+					if(countStep<numberOfProcess) {
+						if(finish.get(i) == true) {
+							resultText.setText(resultText.getText() + "\n-> P"
+									+String.valueOf(i+1)+" đã được cấp phát tài nguyên -> Bỏ qua\n");
+						}
+						else {
+							resultText.setText(resultText.getText() + "\n-> P"
+									+String.valueOf(i+1)+ " có Need["+String.valueOf(i+1)+"] = (");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText.setText(resultText.getText()+String.valueOf(need.get(i).get(j))+" ; ");
+								else 
+									resultText.setText(resultText.getText()+String.valueOf(need.get(i).get(j))+" ) ");
+							}
+							resultText.setText(resultText.getText()+" > Available = ( ");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText.setText(resultText.getText()+String.valueOf(work.get(j))+" ; ");
+								else 
+									resultText.setText(resultText.getText()+String.valueOf(work.get(j))+" ) -> Bỏ qua \n");
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		for ( int i=0 ; i<numberOfProcess ; i++) {
+			if(finish.get(i) == false) return false;
+		}
+		return true;
+	}
+	
+	public boolean safe2() {
+		orderOfExecution = new ArrayList<Integer>();
+		int countStep = 0;
+		work = new ArrayList<Integer>(available);
+		finish = new ArrayList<Boolean>(Collections.nCopies(numberOfProcess, false));
+		boolean flag = true;
+		while(flag == true) {
+			flag = false;
+			for ( int i=0 ; i<numberOfProcess ; i++) {
+				if(finish.get(i) == false && aSmallAndEqualThanB(need.get(i), work) == true) {
+					countStep += 1;
+					finish.set(i, true);
+					orderOfExecution.add(i+1);
+					resultText2.setText(resultText2.getText()+"\n"
+							+" -> Bước "+String.valueOf(countStep)+": Need[" +String.valueOf(i+1)+"] = ( ");
+					for ( int j=0 ; j<numberOfResource ; j++) {
+						if(j!=numberOfResource-1)
+							resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ; ");
+						else 
+							resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ) ");
+					}
+					resultText2.setText(resultText2.getText()+" <= Available = ( ");
+					for ( int j=0 ; j<numberOfResource ; j++) {
+						if(j!=numberOfResource-1)
+							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
+						else 
+							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) ");
+					}
+					resultText2.setText(resultText2.getText()+"\n    -> P" +String.valueOf(i+1)+" được cấp phát thêm tài nguyên."
+							+ "\n        -> Chương trình thu hồi tài nguyên đã cấp phát cho tiến trình P"
+							+ String.valueOf(i+1)
+							+ "\n            -> New Available = (");
+					
+					for ( int j=0 ; j<numberOfResource ; j++) {
+						work.set(j, work.get(j) + allocation.get(i).get(j));
+						flag = true;
+					}
+					
+					for ( int j=0 ; j<numberOfResource ; j++) {
+						if(j!=numberOfResource-1)
+							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
+						else 
+							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) ");
+					}
+					resultText2.setText(resultText2.getText()+"\n");
+				}
+				else {
+					if(countStep<numberOfProcess) {
+						if(finish.get(i) == true) {
+							resultText2.setText(resultText2.getText() + "\n-> P"
+									+String.valueOf(i+1)+" đã được cấp phát tài nguyên -> Bỏ qua\n");
+						}
+						else {
+							resultText2.setText(resultText2.getText() + "\n-> P"
+									+String.valueOf(i+1)+ " có Need["+String.valueOf(i+1)+"] = (");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ; ");
+								else 
+									resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ) ");
+							}
+							resultText2.setText(resultText2.getText()+" > Available = ( ");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
+								else 
+									resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) -> Bỏ qua \n");
+							}
+						}
+					}
+				}
 			}
 		}
 		for ( int i=0 ; i<numberOfProcess ; i++) {
@@ -326,5 +521,5 @@ public class MyFrame extends JFrame implements ActionListener{
 		}
 		return true;
 	}
-	
+		
 }

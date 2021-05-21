@@ -20,18 +20,7 @@ public class RequestTable {
         int process = MyFrame.numberOfProcessRequest;
         int resource = MyFrame.numberOfResource;
         String[][] content = new String[process][resource+1];
-        /*
-        int flag = -1;
-        for (int i=0 ; i<process ; i++) {
-        	if (MyFrame.ProcessRequest.get(i) == true) {
-        		flag += 1;
-        		content[flag][0] = "P"+String.valueOf(i+1);
-            	for( int j=1 ; j<=resource ; j++ ) {
-            		content[flag][j] = String.valueOf(MyFrame.request.get(i).get(j-1));
-            	}
-        	}
-        }
-        */
+        
         Set<Integer> temp = new LinkedHashSet<Integer>(MyFrame.nameOfProcessRequest);
         Iterator<Integer> it = temp.iterator();
         for ( int i=0 ; i<process ; i++) {
@@ -45,7 +34,7 @@ public class RequestTable {
         JScrollPane tableContainer = new JScrollPane(table);
         panel=new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.setBounds(880,150,250,250);
+        panel.setBounds(1005,200,250,200);
         panel.add(label,BorderLayout.NORTH);
         panel.add(tableContainer,BorderLayout.CENTER);
 	}

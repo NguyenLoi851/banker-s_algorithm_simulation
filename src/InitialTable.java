@@ -8,7 +8,7 @@ import java.awt.*;
 public class InitialTable extends JFrame{
 
 	JLabel label = new JLabel();
-	JPanel panel;
+	public static JPanel panel;
 	
 	InitialTable(){
 			
@@ -33,7 +33,7 @@ public class InitialTable extends JFrame{
 	        JScrollPane tableContainer = new JScrollPane(table);
 	        panel=new JPanel();
 	        panel.setLayout(new BorderLayout());
-	        panel.setBounds(10,10,250,100);
+	        panel.setBounds(35,115,250,75);
 	        panel.add(label,BorderLayout.NORTH);
 	        panel.add(tableContainer,BorderLayout.CENTER);
 	        
