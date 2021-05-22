@@ -24,8 +24,8 @@ public class MyFrame extends JFrame implements ActionListener{
 	public static ArrayList<ArrayList<Integer>> allocation, max, need, request;
 	public static ArrayList<Integer> temp;
 	public static ArrayList<Boolean> finish;
-	public static Set<Integer> nameOfProcessRequest;
-	
+	//public static Set<Integer> nameOfProcessRequest;
+	public static ArrayList<Integer> nameOfProcessRequest;
 	
 	MyFrame(){
 		frame.setTitle("Banker's Algorithm Simulation");
@@ -160,7 +160,6 @@ public class MyFrame extends JFrame implements ActionListener{
 				temp = new ArrayList<Integer>();
 				for ( int i=0 ; i<numberOfResource ; i++) {
 					temp.add(rand.nextInt((initial.get(i))/numberOfProcess));
-					
 				}
 				allocation.add(temp);
 			}
@@ -212,7 +211,8 @@ public class MyFrame extends JFrame implements ActionListener{
 			
 			checkButtonRequest = true;
 			request = new ArrayList<ArrayList<Integer>>();
-			nameOfProcessRequest = new LinkedHashSet<Integer>();
+			//nameOfProcessRequest = new LinkedHashSet<Integer>();
+			nameOfProcessRequest = new ArrayList<Integer>();
 			numberOfProcessRequest = rand.nextInt(numberOfProcess/2)+1;
 			while(nameOfProcessRequest.size() < numberOfProcessRequest) {
 				nameOfProcessRequest.add(rand.nextInt(numberOfProcess)+1);

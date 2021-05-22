@@ -21,7 +21,8 @@ public class RequestTable {
         int resource = MyFrame.numberOfResource;
         String[][] content = new String[process][resource+1];
         
-        Set<Integer> temp = new LinkedHashSet<Integer>(MyFrame.nameOfProcessRequest);
+        //Set<Integer> temp = new LinkedHashSet<Integer>(MyFrame.nameOfProcessRequest);
+        ArrayList<Integer> temp = new ArrayList<Integer>(MyFrame.nameOfProcessRequest);
         Iterator<Integer> it = temp.iterator();
         for ( int i=0 ; i<process ; i++) {
         	content[i][0] = "P"+String.valueOf(it.next());
