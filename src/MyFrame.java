@@ -57,7 +57,7 @@ public class MyFrame extends JFrame implements ActionListener{
 	    panel2.add(textContainer2,BorderLayout.NORTH);
 	    
 	    JTextField text=new JTextField();
-        text.setText("Banker's Algorithm Simulator");
+        text.setText("Banker's Algorithm Simulation");
         text.setBounds(500,10,300,75);
         text.setHorizontalAlignment(JTextField.CENTER);
         text.setFont(new Font("Comic Sans", Font.BOLD + Font.ITALIC, 20));
@@ -266,7 +266,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			if(checkButtonRequest == false) {
 				resultText.setText(resultText.getText()+"\n\n\n                       "
 						+ "---------- Kết quả chạy thuật toán kiểm tra tính an toàn----------\n");
-				if(safe() == true) {
+				if(safe(resultText) == true) {
 					resultText.setText(resultText.getText()+"\n"+" -> Trạng thái hiện tại của hệ thống: An toàn \n");
 					resultText.setText(resultText.getText()+"   -> Trình tự cấp phát tài nguyên: ");
 					for( int i=0 ; i<numberOfProcess ; i++) {
@@ -285,26 +285,34 @@ public class MyFrame extends JFrame implements ActionListener{
 				Integer[] temp = nameOfProcessRequest.toArray(new Integer[nameOfProcessRequest.size()]);
 				for ( int i=0 ; i<numberOfProcessRequest ; i++) {
 					//xét tiến trình với need[i]
+					
+					resultText2.setText(resultText2.getText()+"\n------------------------------------------------------------"
+							+"-----------------------------------------------------------------------------------------------\n"
+							+"\n"+" -> Xét P"+String.valueOf(temp[i])+":");
+					
 					if(aSmallAndEqualThanB(request.get(i), need.get(temp[i]-1)) == false) {
+						
 						resultText2.setText(resultText2.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
-								": Yêu cầu vượt quá khai báo Tài nguyên. Do request(P"
-								+String.valueOf(temp[i])+") = (");
+								": Yêu cầu vượt quá khai báo Tài nguyên. Do request["
+								+String.valueOf(temp[i])+"] = (");
 						for ( int j=0 ; j<numberOfResource ; j++) {
 							if(j!=numberOfResource-1)
 								resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ; "));
 							else
 								resultText2.setText(resultText2.getText()+String.valueOf(request.get(i).get(j)+" ) "));
 						}
-						resultText2.setText(resultText2.getText()+"> need(P"+String.valueOf(temp[i]) +")= (");
+						resultText2.setText(resultText2.getText()+"> need["+String.valueOf(temp[i]) +"]= (");
 						for ( int j=0 ; j<numberOfResource ; j++) {
 							if(j!=numberOfResource-1)
 								resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ; "));
 							else
 								resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ) \n"));
 						}
+						
 					}else {
 						//xét tiến trình với available
 						if(aSmallAndEqualThanB(request.get(i), available) == false) {
+							
 							resultText2.setText(resultText2.getText()+"\n"+" -> P"+String.valueOf(temp[i])+
 									": Không đủ tài nguyên, tiến trình phải đợi. Do request(P"
 									+String.valueOf(temp[i])+") = (");
@@ -321,15 +329,44 @@ public class MyFrame extends JFrame implements ActionListener{
 								else
 									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ) \n"));
 							}
+							
 						}else {
 							for( int j=0 ; j<numberOfResource ; j++) {
 								available.set(j, available.get(j) - request.get(i).get(j));
 								allocation.get(temp[i]-1).set(j, allocation.get(temp[i]-1).get(j) + request.get(i).get(j));
 								need.get(temp[i]-1).set(j, need.get(temp[i]-1).get(j) - request.get(i).get(j));
 							}
-							if(safe2() == true) {
+							//in thông tin mới cho available
+							resultText2.setText(resultText2.getText()+"\n -> Cập nhật thông tin, nếu cấp phát tài nguyên thì: "+"\n"
+										+" -> Available = (");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ; "));
+								else
+									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ) \n"));
+							}
+							//int thông tin mới cho allocation
+							resultText2.setText(resultText2.getText()+" -> Allocation["+String.valueOf(temp[i]-1)
+									+"] = (");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText2.setText(resultText2.getText()+String.valueOf(allocation.get(temp[i]-1).get(j)+" ; "));
+								else
+									resultText2.setText(resultText2.getText()+String.valueOf(allocation.get(temp[i]-1).get(j)+" ) \n"));
+							}
+							//in thông tin mới cho need
+							resultText2.setText(resultText2.getText()+" -> Need["+String.valueOf(temp[i]-1)
+									+"] = (");
+							for ( int j=0 ; j<numberOfResource ; j++) {
+								if(j!=numberOfResource-1)
+									resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ; "));
+								else
+									resultText2.setText(resultText2.getText()+String.valueOf(need.get(temp[i]-1).get(j)+" ) \n"));
+							}
+							
+							if(safe(resultText2) == true) {
 								resultText2.setText(resultText2.getText()+"\n"+" -> P"+
-										String.valueOf(temp[i])+": Được phân phối theo yêu cầu"+"\n");
+										String.valueOf(temp[i])+": Được phân phối tài nguyên theo yêu cầu"+"\n");
 								resultText2.setText(resultText2.getText()+"   -> Trình tự cấp phát tài nguyên: ");
 								for( int k=0 ; k<numberOfProcess ; k++) {
 									if(k!=numberOfProcess-1)
@@ -363,7 +400,7 @@ public class MyFrame extends JFrame implements ActionListener{
 	}
 	
 	//chay thuat toan an toan
-	public boolean safe() {
+	public boolean safe(JTextArea resultText) {
 		orderOfExecution = new ArrayList<Integer>();
 		int countStep = 0;
 		work = new ArrayList<Integer>(available);
@@ -442,84 +479,5 @@ public class MyFrame extends JFrame implements ActionListener{
 		}
 		return true;
 	}
-	
-	public boolean safe2() {
-		orderOfExecution = new ArrayList<Integer>();
-		int countStep = 0;
-		work = new ArrayList<Integer>(available);
-		finish = new ArrayList<Boolean>(Collections.nCopies(numberOfProcess, false));
-		boolean flag = true;
-		while(flag == true) {
-			flag = false;
-			for ( int i=0 ; i<numberOfProcess ; i++) {
-				if(finish.get(i) == false && aSmallAndEqualThanB(need.get(i), work) == true) {
-					countStep += 1;
-					finish.set(i, true);
-					orderOfExecution.add(i+1);
-					resultText2.setText(resultText2.getText()+"\n"
-							+" -> Bước "+String.valueOf(countStep)+": Need[" +String.valueOf(i+1)+"] = ( ");
-					for ( int j=0 ; j<numberOfResource ; j++) {
-						if(j!=numberOfResource-1)
-							resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ; ");
-						else 
-							resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ) ");
-					}
-					resultText2.setText(resultText2.getText()+" <= Available = ( ");
-					for ( int j=0 ; j<numberOfResource ; j++) {
-						if(j!=numberOfResource-1)
-							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
-						else 
-							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) ");
-					}
-					resultText2.setText(resultText2.getText()+"\n    -> P" +String.valueOf(i+1)+" được cấp phát thêm tài nguyên."
-							+ "\n        -> Chương trình thu hồi tài nguyên đã cấp phát cho tiến trình P"
-							+ String.valueOf(i+1)
-							+ "\n            -> New Available = (");
-					
-					for ( int j=0 ; j<numberOfResource ; j++) {
-						work.set(j, work.get(j) + allocation.get(i).get(j));
-						flag = true;
-					}
-					
-					for ( int j=0 ; j<numberOfResource ; j++) {
-						if(j!=numberOfResource-1)
-							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
-						else 
-							resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) ");
-					}
-					resultText2.setText(resultText2.getText()+"\n");
-				}
-				else {
-					if(countStep<numberOfProcess) {
-						if(finish.get(i) == true) {
-							resultText2.setText(resultText2.getText() + "\n-> P"
-									+String.valueOf(i+1)+" đã được cấp phát tài nguyên -> Bỏ qua\n");
-						}
-						else {
-							resultText2.setText(resultText2.getText() + "\n-> P"
-									+String.valueOf(i+1)+ " có Need["+String.valueOf(i+1)+"] = (");
-							for ( int j=0 ; j<numberOfResource ; j++) {
-								if(j!=numberOfResource-1)
-									resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ; ");
-								else 
-									resultText2.setText(resultText2.getText()+String.valueOf(need.get(i).get(j))+" ) ");
-							}
-							resultText2.setText(resultText2.getText()+" > Available = ( ");
-							for ( int j=0 ; j<numberOfResource ; j++) {
-								if(j!=numberOfResource-1)
-									resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ; ");
-								else 
-									resultText2.setText(resultText2.getText()+String.valueOf(work.get(j))+" ) -> Bỏ qua \n");
-							}
-						}
-					}
-				}
-			}
-		}
-		for ( int i=0 ; i<numberOfProcess ; i++) {
-			if(finish.get(i) == false) return false;
-		}
-		return true;
-	}
-		
 }
+
