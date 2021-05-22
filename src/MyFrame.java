@@ -346,7 +346,7 @@ public class MyFrame extends JFrame implements ActionListener{
 									resultText2.setText(resultText2.getText()+String.valueOf(available.get(j)+" ) \n"));
 							}
 							//int thông tin mới cho allocation
-							resultText2.setText(resultText2.getText()+" -> Allocation["+String.valueOf(temp[i]-1)
+							resultText2.setText(resultText2.getText()+" -> Allocation["+String.valueOf(temp[i])
 									+"] = (");
 							for ( int j=0 ; j<numberOfResource ; j++) {
 								if(j!=numberOfResource-1)
@@ -355,7 +355,7 @@ public class MyFrame extends JFrame implements ActionListener{
 									resultText2.setText(resultText2.getText()+String.valueOf(allocation.get(temp[i]-1).get(j)+" ) \n"));
 							}
 							//in thông tin mới cho need
-							resultText2.setText(resultText2.getText()+" -> Need["+String.valueOf(temp[i]-1)
+							resultText2.setText(resultText2.getText()+" -> Need["+String.valueOf(temp[i])
 									+"] = (");
 							for ( int j=0 ; j<numberOfResource ; j++) {
 								if(j!=numberOfResource-1)
