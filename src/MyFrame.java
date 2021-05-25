@@ -24,8 +24,8 @@ public class MyFrame extends JFrame implements ActionListener{
 	public static ArrayList<ArrayList<Integer>> allocation, max, need, request;
 	public static ArrayList<Integer> temp;
 	public static ArrayList<Boolean> finish;
-	//public static Set<Integer> nameOfProcessRequest;
-	public static ArrayList<Integer> nameOfProcessRequest;
+	public static Set<Integer> nameOfProcessRequest;
+	//public static ArrayList<Integer> nameOfProcessRequest;
 	
 	MyFrame(){
 		frame.setTitle("Banker's Algorithm Simulation");
@@ -80,6 +80,7 @@ public class MyFrame extends JFrame implements ActionListener{
 	    buttonRun.setBounds(828,130,135,50);
 	    buttonRun.setBackground(Color.yellow);
 	    buttonRun.addActionListener(this);
+	    buttonRun.setEnabled(false);
 	    
 	    buttonRequest = new JButton("Request Random");
 	    buttonRequest.setBounds(974,130,135,50);
@@ -106,6 +107,7 @@ public class MyFrame extends JFrame implements ActionListener{
 		
 		if(e.getSource() == buttonRandom) { 			// click Start button
 			//Initial table random 
+			buttonRun.setEnabled(true);
 			if(checkButtonRandom == true) {
 				AllocationTable.panel.setVisible(false);
 				frame.remove(AllocationTable.panel);
@@ -125,8 +127,9 @@ public class MyFrame extends JFrame implements ActionListener{
 				resultText.setText("");
 				resultText2.setText("");
 			}
+			
 			checkButtonRandom = true;
-			numberOfResource = rand.nextInt(6)+3 ;	// 3-8
+			numberOfResource = rand.nextInt(6)+3 ;	// 2-8
 			numberOfProcess = rand.nextInt(6)+5;	// 5-10
 			
 			initial = new ArrayList<Integer>();
@@ -202,6 +205,7 @@ public class MyFrame extends JFrame implements ActionListener{
 		}
 	
 		if(e.getSource() == buttonRequest) { 			//click Request button
+			buttonRun.setEnabled(true);
 			//request table random
 			if(checkButtonRequest == true) {
 				RequestTable.panel.setVisible(false);
@@ -211,9 +215,9 @@ public class MyFrame extends JFrame implements ActionListener{
 			
 			checkButtonRequest = true;
 			request = new ArrayList<ArrayList<Integer>>();
-			//nameOfProcessRequest = new LinkedHashSet<Integer>();
-			nameOfProcessRequest = new ArrayList<Integer>();
-			numberOfProcessRequest = rand.nextInt(numberOfProcess/2)+1;
+			nameOfProcessRequest = new LinkedHashSet<Integer>();
+			//nameOfProcessRequest = new ArrayList<Integer>();
+			numberOfProcessRequest = rand.nextInt(numberOfProcess/2)+numberOfProcess/2;
 			while(nameOfProcessRequest.size() < numberOfProcessRequest) {
 				nameOfProcessRequest.add(rand.nextInt(numberOfProcess)+1);
 			}
@@ -222,7 +226,7 @@ public class MyFrame extends JFrame implements ActionListener{
 				temp = new ArrayList<Integer>();
 				for( int i=0 ; i<numberOfResource ; i++) {
 					float a = need.get(tem[j]-1).get(i);
-					temp.add(rand.nextInt((int)(a/100*85+a/100*30)+1));
+					temp.add(rand.nextInt((int)(a/100*75+a/100*30)+1));
 				}
 				request.add(temp);
 			}
@@ -256,6 +260,7 @@ public class MyFrame extends JFrame implements ActionListener{
 			}
 			resultText.setText("");
 			resultText2.setText("");
+			buttonRun.setEnabled(false);
 		}
 		
 		
@@ -480,4 +485,3 @@ public class MyFrame extends JFrame implements ActionListener{
 		return true;
 	}
 }
-
